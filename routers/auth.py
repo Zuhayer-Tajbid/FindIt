@@ -47,3 +47,20 @@ def login(data: dict):
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
     return user
+
+@router.get("/users")
+def get_users():
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT id, name, roll, email, role
+        FROM users
+    """)
+
+    users = cursor.fetchall()
+
+    cursor.close()
+    db.close()
+
+    return users
