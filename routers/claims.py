@@ -49,7 +49,7 @@ def get_claims(user_id: int | None = None):
               c.claim_time,
               c.status AS claim_status,
               i.title AS item_title,
-              i.category,
+              i.category
             FROM claims c
             JOIN items i ON c.item_id = i.id
             WHERE c.claimer_id = %s
@@ -69,7 +69,7 @@ def get_claims(user_id: int | None = None):
               c.claim_time,
               c.status AS claim_status,
               i.title AS item_title,
-              i.category,
+              i.category
             FROM claims c
             JOIN items i ON c.item_id = i.id
             ORDER BY c.claim_time DESC
