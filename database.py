@@ -11,5 +11,7 @@ def get_db():
         user=os.getenv("DB_USER"),
         password=os.getenv("DB_PASS"),
         database=os.getenv("DB_NAME"),
-        ssl_disabled=False
+        ssl_ca="ca.pem",
+        ssl_disabled=False,
+        ssl_verify_cert=True
     )

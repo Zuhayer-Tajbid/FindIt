@@ -1,10 +1,11 @@
 from fastapi import APIRouter
 from database import get_db
+from schemas.items import ItemCreate
 
 router = APIRouter(prefix="/items", tags=["Items"])
 
 @router.post("/report")
-def report_item(data: dict):
+def report_item(data: ItemCreate):
     db = get_db()
     cursor = db.cursor()
 
@@ -16,18 +17,20 @@ def report_item(data: dict):
         VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
         """,
         (
-            data["title"],
-            data["short_description"],
-            data["detailed_description"],
-            data["category"],
-            data["status"],
-            data["location"],
-            data["event_time"],
-            data["reporter_id"]
+            data.title,
+            data.short_description,
+            data.detailed_description,
+            data.category,
+            data.status,
+            data.location,
+            data.event_time,
+            data.reporter_id
         )
     )
+
     db.commit()
-    return {"message": "Item reported"}
+    return {"message": "Item reported successfully"}
+
 
 @router.get("/")
 def list_items():
