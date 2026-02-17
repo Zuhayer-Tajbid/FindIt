@@ -39,10 +39,28 @@ def list_items():
 
     cursor.execute(
         """
-        SELECT id, title, short_description, category,
-               status, location, event_time
-        FROM items
-        ORDER BY created_at DESC
+        SELECT 
+          i.id,
+          i.title,
+          i.short_description,
+          i.category,
+          i.status,
+          i.location,
+          i.event_time,
+
+          u.id   AS user_id,
+          u.name AS user_name,
+          u.roll AS user_roll
+
+        FROM items i
+        JOIN users u ON i.reporter_id = u.id
+        ORDER BY i.created_at DESC
         """
     )
-    return cursor.fetchall()
+
+    items = cursor.fetchall()
+    cursor.close()
+    db.close()
+
+    return items
+
