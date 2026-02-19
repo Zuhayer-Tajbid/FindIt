@@ -64,3 +64,25 @@ def list_items():
 
     return items
 
+@router.delete("/{item_id}")
+def delete_item(item_id: int):
+    db = get_db()
+    cursor = db.cursor()
+
+    # Optional: delete related claims first (if foreign key not cascading)
+    cursor.execute(
+        "DELETE FROM claims WHERE item_id = %s",
+        (item_id,)
+    )
+
+    cursor.execute(
+        "DELETE FROM items WHERE id = %s",
+        (item_id,)
+    )
+
+    db.commit()
+
+    cursor.close()
+    db.close()
+
+    return {"success": True}

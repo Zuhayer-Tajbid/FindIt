@@ -78,3 +78,19 @@ def get_claims(user_id: int | None = None):
 
     claims = cursor.fetchall()
     return claims
+
+@router.delete("/{claim_id}")
+def delete_claim(claim_id: int):
+    db = get_db()
+    cursor = db.cursor()
+
+    cursor.execute(
+        "DELETE FROM claims WHERE id = %s",
+        (claim_id,)
+    )
+
+    db.commit()
+    cursor.close()
+    db.close()
+
+    return {"success": True}
