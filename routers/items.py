@@ -43,6 +43,7 @@ def list_items():
           i.id,
           i.title,
           i.short_description,
+          i.detailed_description,
           i.category,
           i.status,
           i.location,
