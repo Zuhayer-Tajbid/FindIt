@@ -87,3 +87,39 @@ def delete_item(item_id: int):
     db.close()
 
     return {"success": True}
+
+@router.put("/{item_id}")
+def update_item(item_id: int, data: ItemCreate):
+    db = get_db()
+    cursor = db.cursor()
+
+    cursor.execute(
+        """
+        UPDATE items
+        SET
+            title = %s,
+            short_description = %s,
+            detailed_description = %s,
+            category = %s,
+            status = %s,
+            location = %s,
+            event_time = %s
+        WHERE id = %s
+        """,
+        (
+            data.title,
+            data.short_description,
+            data.detailed_description,
+            data.category,
+            data.status,
+            data.location,
+            data.event_time,
+            item_id
+        )
+    )
+
+    db.commit()
+    cursor.close()
+    db.close()
+
+    return {"success": True}
