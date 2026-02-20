@@ -94,3 +94,32 @@ def delete_claim(claim_id: int):
     db.close()
 
     return {"success": True}
+
+
+@router.put("/{claim_id}")
+def update_claim(claim_id: int, data: ClaimCreate):
+    db = get_db()
+    cursor = db.cursor()
+
+    cursor.execute(
+        """
+        UPDATE claims
+        SET
+            claim_description = %s,
+            claim_location = %s,
+            claim_time = %s
+        WHERE id = %s
+        """,
+        (
+            data.claim_description,
+            data.claim_location,
+            data.claim_time,
+            claim_id
+        )
+    )
+
+    db.commit()
+    cursor.close()
+    db.close()
+
+    return {"success": True}
