@@ -49,9 +49,12 @@ def get_claims(user_id: int | None = None):
               c.claim_time,
               c.status AS claim_status,
               i.title AS item_title,
-              i.category
+              i.category,
+              u.name AS claimer_name,
+              u.roll AS claimer_roll
             FROM claims c
             JOIN items i ON c.item_id = i.id
+            JOIN users u ON c.claimer_id = u.id
             WHERE c.claimer_id = %s
             ORDER BY c.claim_time DESC
             """,
@@ -69,14 +72,21 @@ def get_claims(user_id: int | None = None):
               c.claim_time,
               c.status AS claim_status,
               i.title AS item_title,
-              i.category
+              i.category,
+              u.name AS claimer_name,
+              u.roll AS claimer_roll
             FROM claims c
             JOIN items i ON c.item_id = i.id
+            JOIN users u ON c.claimer_id = u.id
             ORDER BY c.claim_time DESC
             """
         )
 
     claims = cursor.fetchall()
+
+    cursor.close()
+    db.close()
+
     return claims
 
 @router.delete("/{claim_id}")
